@@ -17,7 +17,19 @@ public class Tableau {
     //Dessiner le tableau
     public String seDessiner(){
 
-        return "";
+        //TODO remplir le tableau avec les chiffres et colonnes
+
+        StringBuilder dessin = new StringBuilder();
+
+        for (int i = 0; i < taille; i++) {
+            for (int j = 0; j < taille; j++) {
+                dessin.append(tab[i][j]).append("\t");
+            }
+            dessin.append("\n");
+        }
+
+        return dessin.toString();
+    }
     }
 
     public void ClearTheBoard(){
