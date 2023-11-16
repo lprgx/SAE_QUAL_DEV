@@ -10,10 +10,11 @@ public class Main {
     public static void main(String[] args) {
         int numero_instruction = 1; //  Numéro de l'instruction
         String instruction_donnee = "";
-        Tableau MonTab;
+        Tableau MonTab = null;
         int numero_donné;
         int taille = 0;
         Scanner scanner = new Scanner(System.in);
+        boolean rejouer = true;
 
         do {
             String commande_passe[];
@@ -28,13 +29,21 @@ public class Main {
                 numero_donné = Integer.parseInt(commande_passe[0]);
                 if(commande_passe.length > 1){
                     instruction_donnee = commande_passe[1];
+                    
+                    
                     if (instruction_donnee.compareTo("boardsize") == 0) {
                         if(commande_passe.length > 2){
                             if(estNombre(commande_passe[2])){
                                 taille = Integer.parseInt(commande_passe[2]);
-                                MonTab = new Tableau(taille);
-                                System.out.println("boardsize");
-                                numero_instruction++;//Incrémente pour passer au numéro de l'instruction suivante
+                                try {
+                                    MonTab = new Tableau(taille);
+                                    System.out.println("=" + numero_instruction);
+                                    numero_instruction++;//Incrémente pour passer au numéro de l'instruction suivante
+                                }
+                                catch(IllegalArgumentException e){
+                                    System.out.println("taille incorrecte");
+                                }
+
                             }
                             else {
                                 System.out.println("Il faut donner une taille au tableau");
@@ -43,19 +52,38 @@ public class Main {
                         else {
                             System.out.println("Il faut donner une taille au tableau");
                         }
-                    } else if (instruction_donnee.compareTo("clear_board") == 0) {
-                        System.out.println("clear_board");
-                        numero_instruction++;//Incrémente pour passer au numéro de l'instruction suivante
+                    } 
+                    else if (instruction_donnee.compareTo("clear_board") == 0) {
+                        if(numero_instruction>1){
+                            MonTab.ClearTheBoard();
+                            System.out.println("=" + numero_instruction);
+                            numero_instruction++;//Incrémente pour passer au numéro de l'instruction suivante
+                        }
+                        else{
+                            System.out.println(" Vous n'avez pas créer votre tableau à l'aide de la commande boardsize");
+                        }
 
-                    }else if (instruction_donnee.compareTo("genmove ") == 0) {
-                        System.out.println("clear_board");
-                        numero_instruction++;//Incrémente pour passer au numéro de l'instruction suivante
+                    }
+                    else if (instruction_donnee.compareTo("genmove ") == 0) {
+                        if(numero_instruction>1){
+                            System.out.println("clear_board");
+                            numero_instruction++;//Incrémente pour passer au numéro de l'instruction suivante
+                        }
+                        else{
+                            System.out.println(" Vous n'avez pas créer votre tableau à l'aide de la commande boardsize");
+                        }
 
-                    }else if (instruction_donnee.compareTo("play") == 0) {
-                        System.out.println("clear_board");
-                        numero_instruction++;//Incrémente pour passer au numéro de l'instruction suivante
-
-                    }else{
+                    }
+                    else if (instruction_donnee.compareTo("play") == 0) {
+                        if(numero_instruction>1) {
+                            System.out.println("clear_board");
+                            numero_instruction++;//Incrémente pour passer au numéro de l'instruction suivante
+                        }
+                        else{
+                            System.out.println(" Vous n'avez pas créer votre tableau à l'aide de la commande boardsize");
+                        }
+                    }
+                    else{
                         System.out.println("Instruction inconnue");
 
                     }
@@ -78,5 +106,7 @@ public class Main {
             return false; // Si la conversion échoue, la chaîne n'est pas un nombre
         }
     }
+
+
 
 }
