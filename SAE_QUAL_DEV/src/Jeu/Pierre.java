@@ -15,5 +15,12 @@ public class Pierre {
         }
     }
 
+    public String seDessiner(){
+
+        return "";
+    }
+
+
+
 
 }

@@ -14,7 +14,6 @@ public class Main {
         int numero_donné;
         int taille = 0;
         Scanner scanner = new Scanner(System.in);
-        boolean rejouer = true;
 
         do {
             String commande_passe[];
@@ -83,6 +82,12 @@ public class Main {
                             System.out.println(" Vous n'avez pas créer votre tableau à l'aide de la commande boardsize");
                         }
                     }
+                    else if(instruction_donnee.compareTo("query_boardsize") == 0){
+                        if(numero_instruction>1)
+                            System.out.println(MonTab.query_boardsize());
+                        else
+                            System.out.println(" Vous n'avez pas créer votre tableau à l'aide de la commande boardsize");
+                    }
                     else{
                         System.out.println("Instruction inconnue");
 
@@ -106,7 +111,4 @@ public class Main {
             return false; // Si la conversion échoue, la chaîne n'est pas un nombre
         }
     }
-
-
-
 }

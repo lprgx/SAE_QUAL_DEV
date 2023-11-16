@@ -1,7 +1,7 @@
 package Jeu;
 
 public class Tableau {
-    private int tab[][];
+    private Pierre tab[][];
     private int taille; //Utilité ?
 
 
@@ -10,7 +10,7 @@ public class Tableau {
         if(taille_ != 19 && taille_ != 13 && taille_ != 9 ){
             throw new IllegalArgumentException("La taille n'est pas bonne"); //Pas sur qu'on accepte seulement ces dimensions
         }
-        tab = new int [taille_][taille_];
+        tab = new Pierre [taille_][taille_];
         taille = taille_;
     }
 
@@ -30,10 +30,14 @@ public class Tableau {
 
         return dessin.toString();
     }
-    }
+
 
     public void ClearTheBoard(){
-        tab = new int [taille][taille];
+        tab = new Pierre [taille][taille];
+    }
+
+    public int query_boardsize(){
+        return taille;
     }
 
 }
