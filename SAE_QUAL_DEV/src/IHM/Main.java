@@ -109,16 +109,14 @@ public class Main {
                     else
                         System.out.println(" Vous n'avez pas créer votre tableau à l'aide de la commande boardsize");
                 }
-                else{
+                else if(instruction_donnee.compareTo("quit") == 0){
+                    System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
+                    return;
+                }else{
                     System.out.println("Instruction inconnue");
-
                 }
             }
-
-
-
-
-        } while (instruction_donnee.compareTo("quit") != 0);
+        } while (true);
     }
 
 
