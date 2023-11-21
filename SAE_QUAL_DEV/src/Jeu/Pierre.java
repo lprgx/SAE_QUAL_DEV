@@ -11,16 +11,13 @@ public class Pierre {
     public Pierre(String couleur){
         if(couleur.compareTo("ROUGE")==0) {
             this.couleur = TypeCouleur.ROUGE;
-
         }
     }
 
-    public String seDessiner(){
+    public String toString(){
 
-        return "";
+        return ".";
     }
-
-
 
 
 }

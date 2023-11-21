@@ -28,8 +28,6 @@ public class Main {
                 numero_donné = Integer.parseInt(commande_passe[0]);
                 if(commande_passe.length > 1){
                     instruction_donnee = commande_passe[1];
-                    
-                    
                     if (instruction_donnee.compareTo("boardsize") == 0) {
                         if(commande_passe.length > 2){
                             if(estNombre(commande_passe[2])){
@@ -42,7 +40,6 @@ public class Main {
                                 catch(IllegalArgumentException e){
                                     System.out.println("taille incorrecte");
                                 }
-
                             }
                             else {
                                 System.out.println("Il faut donner une taille au tableau");
@@ -88,6 +85,9 @@ public class Main {
                         else
                             System.out.println(" Vous n'avez pas créer votre tableau à l'aide de la commande boardsize");
                     }
+                    else if(instruction_donnee.compareTo("showboard") == 0){
+                        System.out.println(MonTab.seDessiner());
+                    }
                     else{
                         System.out.println("Instruction inconnue");
 
@@ -111,4 +111,5 @@ public class Main {
             return false; // Si la conversion échoue, la chaîne n'est pas un nombre
         }
     }
+
 }
