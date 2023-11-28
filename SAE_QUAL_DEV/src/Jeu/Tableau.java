@@ -1,23 +1,22 @@
 package Jeu;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Tableau {
-    private Pierre tab[][];
-    private int taille; //Utilité ?
-
-
+    private Map<Coord,Pierre> MesPierres;
+    private int taille = 0; //Utilité ?
+    private static final int taille_standard = 9;
 
     public Tableau(int taille_){
-        if(taille_ <2 || taille > 25 ){
+        if(taille_ <2 || taille_ > 25 ){
             throw new IllegalArgumentException("La taille n'est pas bonne"); //Pas sur qu'on accepte seulement ces dimensions
         }
-        tab = new Pierre [taille_][taille_];
         taille = taille_;
-        for (int i = 0; i < taille ; i++) {
-            for (int j = 0; j < taille ; j++) {
-                tab [i][j] = new Pierre ("ROUGE");
-
-            }
-        }
+        MesPierres = new HashMap <Coord,Pierre>();
+    }
+    public Tableau(){
+        this(taille_standard);
     }
 
     //Dessiner le tableau
@@ -28,7 +27,7 @@ public class Tableau {
         dessin.append("    ");
         char lettre = 'A';
         for (int i = 0 ; i < taille ; ++i){
-            dessin.append(lettre).append("  ");
+            dessin.append(lettre).append(" ");
             lettre += 1;
         }
         dessin.append("\n");
@@ -38,7 +37,13 @@ public class Tableau {
                 dessin.append(" ");
             dessin.append(mataille).append("  ");
             for (int j = 0; j < taille ; j++) {
-                dessin.append(tab[i][j].toString()).append("  ");
+
+                if(MesPierres.containsKey(new Coord(i,j))){
+
+                }
+                else{
+                    dessin.append(".").append(" ");
+                }
             }
             dessin.append(mataille).append("  ");
             dessin.append("\n");
@@ -46,22 +51,38 @@ public class Tableau {
         }
 
         dessin.append("    ");
-         lettre = 'A';
+        lettre = 'A';
         for (int i = 0 ; i < taille ; ++i){
-            dessin.append(lettre).append("  ");
+            dessin.append(lettre).append(" ");
             lettre += 1;
         }
-
         return dessin.toString();
     }
 
 
     public void ClearTheBoard(){
-        tab = new Pierre [taille][taille];
+        MesPierres.clear();
     }
 
     public int query_boardsize(){
         return taille;
+    }
+
+    private class Coord{
+        private int x;
+        private int y;
+
+        public Coord(int a, int b){
+            x=a;
+            y=b;
+
+        }
+        public int getX(){
+            return x;
+        }
+        public int getY(){
+            return y;
+        }
     }
 
 }

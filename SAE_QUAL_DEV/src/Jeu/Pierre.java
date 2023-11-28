@@ -2,15 +2,14 @@ package Jeu;
 
 public class Pierre {
     private enum TypeCouleur {
-        BLANCHE,
+        ROUGE,
         NOIRE
     }
     private TypeCouleur couleur;
 
-
     public Pierre(String couleur){
-        if(couleur.compareTo("BLANCHE")==0) {
-            this.couleur = TypeCouleur.BLANCHE;
+        if(couleur.compareTo("ROUGE")==0) {
+            this.couleur = TypeCouleur.ROUGE;
         }
     }
 
@@ -18,6 +17,5 @@ public class Pierre {
 
         return ".";
     }
-
-
 }
+
