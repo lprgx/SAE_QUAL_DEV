@@ -10,4 +10,5 @@ Remarques :
 - afficher "=" si bon ou "?" si erreur de commande (numéro en plus si jamais il ya un numéro)
 - mettre qu'un seul espace entre les colones
 - afficher le score
+- Ajouter un paquetage "Go" et "Ihm"
 
