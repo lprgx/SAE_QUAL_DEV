@@ -19,7 +19,7 @@ public class Main {
             commande_zpasse = commande_zpasse.trim();
             int numero_donné = 0;
             String instruction_donnee = "";
-            String arg = ""; //Plus tard, on peut faire un tableau d'argument
+            String arg [] = new String[0]; //Plus tard, on peut faire un tableau d'argument
             boolean commande_valide = false;
             String commande_passe[];
             if(commande_zpasse.length() != 0){
@@ -27,24 +27,29 @@ public class Main {
                 if(!estNombre(commande_passe[0])){
                     commande_valide = true;
                     instruction_donnee = commande_passe[0];
-                    if (commande_passe.length>1)
-                        arg = commande_passe[1];
-
+                    arg = new String [commande_passe.length-1];
                 }
                 else {
-                    numero_donné = Integer.parseInt(commande_passe[0]);
+
                     if (commande_passe.length > 1) {
                         instruction_donnee = commande_passe[1];
-                        if (commande_passe.length>2)
-                            arg = commande_passe[2];
                         commande_valide = true;
+                        numero_donné = Integer.parseInt(commande_passe[0]);
+                        arg = new String [commande_passe.length-2];
                     }
                 }
+                for (int i = 0; i < arg.length ; ++i){
+                    if(!estNombre(commande_passe[0]))
+                        arg[i] = commande_passe[i+1];
+                    else
+                        arg[i] = commande_passe[i+2];
+                }
             }
+
             if(commande_valide) {
                 if (instruction_donnee.compareTo("boardsize") == 0) {
-                    if(arg.compareTo("") != 0 && estNombre(arg)){
-                        taille = Integer.parseInt(arg);
+                    if(arg[0].compareTo("") != 0 && estNombre(arg[0])){
+                        taille = Integer.parseInt(arg[0]);
                         try {
                             MonTab = new Tableau(taille);
                             System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
@@ -65,7 +70,9 @@ public class Main {
                     System.out.println("clear_board");
                 }
                 else if (instruction_donnee.compareTo("play") == 0) {
-                    System.out.println("clear_board");
+                    
+                    MonTab.play(arg[0],arg[1]);
+                    System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
 
                 }
                 else if(instruction_donnee.compareTo("query_boardsize") == 0){

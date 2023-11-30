@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Tableau {
-    private Map<Coord,Pierre> MesPierres;
+    private HashMap<Integer,HashMap<Integer, Pierre>> MesPierres;
+
     private int taille = 0; //Utilité ?
+
     private static final int taille_standard = 9;
 
     public Tableau(int taille_){
@@ -13,8 +15,10 @@ public class Tableau {
             throw new IllegalArgumentException("La taille n'est pas bonne"); //Pas sur qu'on accepte seulement ces dimensions
         }
         taille = taille_;
-        MesPierres = new HashMap <Coord,Pierre>();
+        MesPierres = new HashMap <> ();
+
     }
+
     public Tableau(){
         this(taille_standard);
     }
@@ -37,9 +41,11 @@ public class Tableau {
                 dessin.append(" ");
             dessin.append(mataille).append("  ");
             for (int j = 0; j < taille ; j++) {
-
-                if(MesPierres.containsKey(new Coord(i,j))){
-
+                if(MesPierres.containsKey(j)){
+                    if(MesPierres.get(j).containsKey(taille - i - 1))
+                        dessin.append(MesPierres.get(j).get(taille - i -1).toString()).append(" ");
+                    else
+                        dessin.append(".").append(" ");
                 }
                 else{
                     dessin.append(".").append(" ");
@@ -68,21 +74,31 @@ public class Tableau {
         return taille;
     }
 
-    private class Coord{
-        private int x;
-        private int y;
+    public void play(String couleur, String coord){
+        couleur = couleur.toUpperCase();
+        coord = coord.toUpperCase();
 
-        public Coord(int a, int b){
-            x=a;
-            y=b;
+        int x = coord.charAt(0) - 'A';
+        couleur = couleur.toUpperCase();
+        int y = coord.charAt(1) -'1';
+        if(x < 0 || x >= taille || y < 0 || y >= taille)
+            throw new IllegalArgumentException("invalid color or coordinate");
+
+        if(MesPierres.containsKey(x)){
+            if(MesPierres.get(x).containsKey(y))
+                throw new IllegalArgumentException("illegal move");
+            else{
+                Pierre pierre = new Pierre(couleur);
+                MesPierres.get(x).put(y,pierre);
+            }
 
         }
-        public int getX(){
-            return x;
-        }
-        public int getY(){
-            return y;
+        else{
+            Pierre pierre = new Pierre(couleur);
+            MesPierres.put(x,new HashMap<>());
+            MesPierres.get(x).put(y,pierre);
         }
     }
+
 
 }
