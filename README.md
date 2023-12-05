@@ -12,3 +12,9 @@ Remarques :
 - afficher le score
 - Ajouter un paquetage "Go" et "Ihm"
 
+
+#SPRINT 2 
+A faire : 
+- Play
+- Power capture
+- Point
