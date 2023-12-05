@@ -99,6 +99,5 @@ public class Tableau {
     }
 
     //TODO FAIRE LA CAPTURE DES POINTS
-
-
+    public void capture(){}; //Coder la capture
 }
