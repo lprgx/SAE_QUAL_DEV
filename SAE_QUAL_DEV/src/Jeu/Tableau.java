@@ -25,9 +25,7 @@ public class Tableau {
 
     //Dessiner le tableau
     public String seDessiner(){
-        //TODO remplir le tableau avec les chiffres et colonnes
         StringBuilder dessin = new StringBuilder();
-
         dessin.append("    ");
         char lettre = 'A';
         for (int i = 0 ; i < taille ; ++i){
@@ -99,6 +97,8 @@ public class Tableau {
             MesPierres.get(x).put(y,pierre);
         }
     }
+
+    //TODO FAIRE LA CAPTURE DES POINTS
 
 
 }
