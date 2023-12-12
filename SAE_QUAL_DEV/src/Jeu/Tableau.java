@@ -97,24 +97,48 @@ public class Tableau {
             MesPierres.put(x,new HashMap<>());
             MesPierres.get(x).put(y,pierre);
         }
-        seDessiner();
-    }
-
-    public void testcapture(String couleur, int x, int y){
-
-    }
-
-
-    //TODO FINIR LA FONCTION CAPTURE
-    /*
-    public void capture(String couleur, int x, int y) {
-
-        List<Pierre.Coord> voisins = MesPierres.get(x).get(y).findVoisins(x,y);
-        for (Pierre pierre : voisins){
-
+        /*
+        boolean estCapture = capture(couleur, x, y, MesPierres);
+        if (estCapture) {
+            // Si la pierre est capturée, supprimez-la du plateau
+            MesPierres.get(x).remove(y);
         }
+         */
     }
-     */
+
+
+    public boolean capture(String couleur, int x, int y, List<List<Pierre>> MesPierres) {
+        Pierre pierre = MesPierres.get(x).get(y);
+
+        if (pierre == null) {
+            return false;
+        }
+
+        // recupere les voisins de la pierre aux coord spécifiees
+        List<Pierre> voisins = pierre.findVoisins(MesPierres, x, y);
+
+        for (Pierre voisin : voisins) {
+            if (voisin != null && voisin.getCouleur() != pierre.getCouleur()) {
+                List<Pierre> liberties = voisin.findVoisins(MesPierres, x, y);
+                boolean estLibre = false;
+
+                for (Pierre liberty : liberties) {
+                    if (liberty == null) {
+                        estLibre = true;
+                        break;
+                    }
+                }
+
+                // Si le voisin n'a pas de liberte
+                if (!estLibre) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 
 
 }

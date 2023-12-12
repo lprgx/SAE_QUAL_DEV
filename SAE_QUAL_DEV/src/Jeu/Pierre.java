@@ -9,6 +9,9 @@ public class Pierre {
         BLACK
     }
 
+    public TypeCouleur getCouleur(){
+        return couleur;
+    }
     //AJOUT DE LA STRUCTURE DE DONNEES COORD
     private record Coord(int x, int y){};
 
@@ -19,13 +22,14 @@ public class Pierre {
             new Coord(0, -1)
     };
 
-    public List<Coord> findVoisins(int x, int y){
-        List<Coord> voisinsList = new ArrayList<>();
+    public List<Pierre> findVoisins(List<List<Pierre>> tableau, int x, int y){
+        List<Pierre> voisinsList = new ArrayList<>();
         for(Coord c : voisins){
-            voisinsList.add(new Coord(x+c.y(), y+c.x()));
-            // x est censé représenter l'axe des ordonnées de la pierre et l'inverse pour y
+            int newX = x + c.y();
+            int newY = y + c.x();
+                voisinsList.add(tableau.get(newX).get(newY));
         }
-        return voisinsList; // on retourne la liste de voisin
+        return voisinsList; // on retourne la liste de voisins
     }
 
 
