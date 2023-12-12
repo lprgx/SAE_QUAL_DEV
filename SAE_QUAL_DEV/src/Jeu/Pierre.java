@@ -29,7 +29,6 @@ public class Pierre {
     }
 
 
-
     private TypeCouleur couleur;
 
     public Pierre(String couleur){

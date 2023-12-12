@@ -73,6 +73,7 @@ public class Main {
                     
                     MonTab.play(arg[0],arg[1]);
                     System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
+                    System.out.println(MonTab.seDessiner());
 
                 }
                 else if(instruction_donnee.compareTo("query_boardsize") == 0){

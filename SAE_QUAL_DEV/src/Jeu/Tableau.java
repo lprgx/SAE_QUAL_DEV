@@ -1,6 +1,7 @@
 package Jeu;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Tableau {
@@ -96,8 +97,24 @@ public class Tableau {
             MesPierres.put(x,new HashMap<>());
             MesPierres.get(x).put(y,pierre);
         }
+        seDessiner();
     }
 
-    //TODO FAIRE LA CAPTURE DES POINTS
-    public void capture(){}; //Coder la capture
+    public void testcapture(String couleur, int x, int y){
+
+    }
+
+
+    //TODO FINIR LA FONCTION CAPTURE
+    /*
+    public void capture(String couleur, int x, int y) {
+
+        List<Pierre.Coord> voisins = MesPierres.get(x).get(y).findVoisins(x,y);
+        for (Pierre pierre : voisins){
+
+        }
+    }
+     */
+
+
 }
