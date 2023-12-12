@@ -97,7 +97,7 @@ public class Tableau {
             MesPierres.put(x,new HashMap<>());
             MesPierres.get(x).put(y,pierre);
         }
-        /* APPEL DE CAPTURE MAIS NECESSIE AJOUT DU SCORE
+        /* APPEL DE CAPTURE MAIS NECESSIE AJOUT DU SCORE BUG AU CHECK
         boolean estCapture = capture(couleur, x, y, MesPierres);
         if (estCapture) {
             MesPierres.get(x).remove(y);
@@ -128,14 +128,12 @@ public class Tableau {
                         break;
                     }
                 }
-
                 // Si le voisin n'a pas de liberte
                 if (!estLibre) {
                     return true;
                 }
             }
         }
-
         return false;
     }
 
