@@ -19,3 +19,19 @@ A faire :
 - Play
 - Power capture
 - Point
+
+
+#SPRINT 3
+
+A faire : 
+- pas de suicide (bonus)
+- pas de KO (bonus)
+- IA Aléatoire Black et White (IA contre IA et IA contre Humain)
+- UI (gogui) (bonus)
+
+- commandes privées :
+  player black random
+  player white human
+
+  liberties B3
+  =5
