@@ -97,24 +97,24 @@ public class Tableau {
             MesPierres.put(x,new HashMap<>());
             MesPierres.get(x).put(y,pierre);
         }
-        /*
+        /* APPEL DE CAPTURE MAIS NECESSIE AJOUT DU SCORE
         boolean estCapture = capture(couleur, x, y, MesPierres);
         if (estCapture) {
-            // Si la pierre est capturée, supprimez-la du plateau
             MesPierres.get(x).remove(y);
         }
-         */
+        */
+
     }
 
 
-    public boolean capture(String couleur, int x, int y, List<List<Pierre>> MesPierres) {
+    public boolean capture(String couleur, int x, int y, HashMap<Integer,HashMap<Integer, Pierre>> MesPierres) {
         Pierre pierre = MesPierres.get(x).get(y);
 
         if (pierre == null) {
             return false;
         }
 
-        // recupere les voisins de la pierre aux coord spécifiees
+        // recupere les voisin de la pierre aux coord specifiees
         List<Pierre> voisins = pierre.findVoisins(MesPierres, x, y);
 
         for (Pierre voisin : voisins) {

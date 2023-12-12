@@ -1,6 +1,7 @@
 package Jeu;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Pierre {
@@ -22,7 +23,7 @@ public class Pierre {
             new Coord(0, -1)
     };
 
-    public List<Pierre> findVoisins(List<List<Pierre>> tableau, int x, int y){
+    public List<Pierre> findVoisins(HashMap<Integer, HashMap<Integer, Pierre>> tableau, int x, int y){
         List<Pierre> voisinsList = new ArrayList<>();
         for(Coord c : voisins){
             int newX = x + c.y();
