@@ -6,14 +6,11 @@ import java.util.Scanner;
 
 public class Main {
 
-
     public static void main(String[] args) {
-
+        boolean play_black = true;
         Tableau MonTab = new Tableau();
-
         int taille = 0;
         Scanner scanner = new Scanner(System.in);
-
         do {
             String commande_zpasse = scanner.nextLine();
             commande_zpasse = commande_zpasse.trim();
@@ -47,8 +44,16 @@ public class Main {
             }
 
             if(commande_valide) {
-                if (instruction_donnee.compareTo("boardsize") == 0) {
-                    if(arg[0].compareTo("") != 0 && estNombre(arg[0])){
+                instruction_donnee = instruction_donnee.toUpperCase();
+                if (instruction_donnee.compareTo("BOARDSIZE") == 0) {
+                    if(arg.length == 0){
+                        System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+" boardsize not an integer");
+                    }
+                    else if(!(estNombre(arg[0]))){
+                        System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+" boardsize not an integer");
+                    }
+                    else
+                    {
                         taille = Integer.parseInt(arg[0]);
                         try {
                             MonTab = new Tableau(taille);
@@ -58,31 +63,39 @@ public class Main {
                             System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+" unacceptable size");
                         }
                     }
-                    else {
-                        System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+" boardsize not an integer");
-                    }
+
                 }
-                else if (instruction_donnee.compareTo("clear_board") == 0) {
+                else if (instruction_donnee.compareTo("CLEAR_BOARD") == 0) {
                     MonTab.ClearTheBoard();
                     System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
                 }
                 else if (instruction_donnee.compareTo("genmove ") == 0) {
                     System.out.println("clear_board");
                 }
-                else if (instruction_donnee.compareTo("play") == 0) {
-                    MonTab.play(arg[0],arg[1]);
-                    System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
-                    System.out.println(MonTab.seDessiner());
+                else if (instruction_donnee.compareTo("PLAY") == 0) {
+                    if(arg.length != 2)
+                        System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+ " invalid color or coordinate");
+                    else{
+                        try{
+                            MonTab.play(arg[0],arg[1]);
+                            System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
+                            System.out.println(MonTab.seDessiner());
+
+
+                        }catch(IllegalArgumentException e){
+                            System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+" "+e.getLocalizedMessage());
+                        }
+                    }
 
                 }
                 else if(instruction_donnee.compareTo("query_boardsize") == 0){
                     System.out.println(MonTab.query_boardsize());
                 }
-                else if(instruction_donnee.compareTo("showboard") == 0){
+                else if(instruction_donnee.compareTo("SHOWBOARD") == 0){
                     System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
                     System.out.println(MonTab.seDessiner());
                 }
-                else if(instruction_donnee.compareTo("quit") == 0){
+                else if(instruction_donnee.compareTo("QUIT") == 0){
                     System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
                     return;
                 }

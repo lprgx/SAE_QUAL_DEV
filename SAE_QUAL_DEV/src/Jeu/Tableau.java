@@ -8,6 +8,8 @@ import java.util.Map;
 public class Tableau {
     private HashMap<Integer,HashMap<Integer, Pierre>> MesPierres;
     private HashMap<Integer,HashMap<Integer, Pierre>> MesPierresCapturées;
+    private int NbBlackCapturés;
+    private int NbWhiteCapturés;
 
     private int taille = 0; //Utilité ?
 
@@ -20,6 +22,9 @@ public class Tableau {
         taille = taille_;
         MesPierres = new HashMap <> ();
         MesPierresCapturées = new HashMap <> ();
+        NbBlackCapturés = 0;
+        NbWhiteCapturés = 0;
+
     }
 
     public Tableau(){
@@ -29,7 +34,7 @@ public class Tableau {
     //Dessiner le tableau
     public String seDessiner(){
         StringBuilder dessin = new StringBuilder();
-        dessin.append("    ");
+        dessin.append("   ");
         char lettre = 'A';
         for (int i = 0 ; i < taille ; ++i){
             dessin.append(lettre).append(" ");
@@ -40,7 +45,7 @@ public class Tableau {
         for (int i = 0; i < taille ; i++) {
             if(mataille < 10 )
                 dessin.append(" ");
-            dessin.append(mataille).append("  ");
+            dessin.append(mataille).append(" ");
             for (int j = 0; j < taille ; j++) {
                 if(MesPierres.containsKey(j)){
                     if(MesPierres.get(j).containsKey(taille - i - 1))
@@ -53,22 +58,29 @@ public class Tableau {
                 }
             }
             dessin.append(mataille).append("  ");
-            dessin.append("\n");
+            if(mataille == 2)
+                dessin.append("\t\t\t\t\t\t\t").append("WHITE (0) has captured "+NbBlackCapturés+" stones\n" );
+            else if(mataille == 1)
+                dessin.append("\t\t\t\t\t\t\t").append("BLACK (X) has captured "+NbWhiteCapturés+" stones\n");
+            else
+                dessin.append("\n");
             mataille = mataille -1;
+
         }
 
-        dessin.append("    ");
+        dessin.append("   ");
         lettre = 'A';
         for (int i = 0 ; i < taille ; ++i){
             dessin.append(lettre).append(" ");
             lettre += 1;
         }
+
         return dessin.toString();
     }
 
 
     public void ClearTheBoard(){
-        MesPierres.clear();
+        //a coder
     }
 
     public int query_boardsize(){
@@ -111,8 +123,18 @@ public class Tableau {
         PierreVisitées.add(new Pierre.Coord(pierre.coord.x(), pierre.coord.y()));
         int mesliberte = 0 ;
         List<Pierre> Voisins = pierre.findVoisins(MesPierres,pierre.coord.x(),pierre.coord.y());
-        if(Voisins.size() < 4)
+        if(pierre.coord.x() == 0 && pierre.coord.y() == 0) {
+            if (Voisins.size() < 2)
+                return 2 - Voisins.size();
+        }
+        else if(pierre.coord.x() == 0 || pierre.coord.y() == 0){
+            if (Voisins.size() < 3)
+                return 3 - Voisins.size();
+        }
+        else if(Voisins.size() < 4)
             return 4 - Voisins.size();
+
+
         for(Pierre pierres : Voisins){
             if (pierres.getCouleur() == pierre.getCouleur()){
                 boolean pierredéjàvisité = false;
@@ -141,11 +163,41 @@ public class Tableau {
         }
 
 
+
     }
 
     public List GetPierreCapture(Pierre pierre){
         List<Pierre> Voisins = pierre.findVoisins(MesPierres, pierre.coord.x(),pierre.coord.y());
         ArrayList<Pierre> PierresCapturées = new ArrayList<>();
+        if(MesPierresCapturées.containsKey(pierre.coord.x())){
+            if(MesPierresCapturées.get(pierre.coord.x()).containsKey(pierre.coord.y())){
+
+            }
+            else{
+                MesPierres.get(pierre.coord.x()).remove(pierre.coord.y());
+                MesPierresCapturées.get(pierre.coord.x()).put(pierre.coord.y(),new Pierre (pierre.getCouleur(), pierre.coord.x(), pierre.coord.y()));
+                PierresCapturées.add(pierre);
+                PierresCapturées.addAll(GetPierreCapture(pierre));
+                if(pierre.getCouleur() == "BLACK")
+                    NbBlackCapturés++;
+                else
+                    NbWhiteCapturés++;
+
+            }
+
+        }
+        else{
+            MesPierres.get(pierre.coord.x()).remove(pierre.coord.y());
+            MesPierresCapturées.put(pierre.coord.x(),new HashMap<>());
+            MesPierresCapturées.get(pierre.coord.x()).put(pierre.coord.y(),new Pierre (pierre.getCouleur(), pierre.coord.x(), pierre.coord.y()));
+            PierresCapturées.add(pierre);
+            PierresCapturées.addAll(GetPierreCapture(pierre));
+            if(pierre.getCouleur() == "BLACK")
+                NbBlackCapturés++;
+            else
+                NbWhiteCapturés++;
+        }
+        PierresCapturées.add(pierre);
         for(Pierre pierresCapturées : Voisins){
             if(pierresCapturées.getCouleur()==pierre.getCouleur()){
                 if(MesPierresCapturées.containsKey(pierresCapturées.coord.x())){
@@ -157,6 +209,10 @@ public class Tableau {
                         MesPierresCapturées.get(pierresCapturées.coord.x()).put(pierresCapturées.coord.y(),new Pierre (pierresCapturées.getCouleur(), pierresCapturées.coord.x(), pierresCapturées.coord.y()));
                         PierresCapturées.add(pierresCapturées);
                         PierresCapturées.addAll(GetPierreCapture(pierresCapturées));
+                        if(pierresCapturées.getCouleur() == "BLACK")
+                            NbBlackCapturés++;
+                        else
+                            NbWhiteCapturés++;
                     }
 
                 }
@@ -166,6 +222,10 @@ public class Tableau {
                     MesPierresCapturées.get(pierresCapturées.coord.x()).put(pierresCapturées.coord.y(),new Pierre (pierresCapturées.getCouleur(), pierresCapturées.coord.x(), pierresCapturées.coord.y()));
                     PierresCapturées.add(pierresCapturées);
                     PierresCapturées.addAll(GetPierreCapture(pierresCapturées));
+                    if(pierresCapturées.getCouleur() == "BLACK")
+                        NbBlackCapturés++;
+                    else
+                        NbWhiteCapturés++;
                 }
             }
 
