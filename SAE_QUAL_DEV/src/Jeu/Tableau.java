@@ -1,11 +1,13 @@
 package Jeu;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Tableau {
     private HashMap<Integer,HashMap<Integer, Pierre>> MesPierres;
+    private HashMap<Integer,HashMap<Integer, Pierre>> MesPierresCapturées;
 
     private int taille = 0; //Utilité ?
 
@@ -17,7 +19,7 @@ public class Tableau {
         }
         taille = taille_;
         MesPierres = new HashMap <> ();
-
+        MesPierresCapturées = new HashMap <> ();
     }
 
     public Tableau(){
@@ -74,6 +76,10 @@ public class Tableau {
     }
 
     public void play(String couleur, String coord){
+        if(coord.length() != 2)
+            throw new IllegalArgumentException("invalid color or coordinate");
+
+        Pierre pierre;
         couleur = couleur.toUpperCase();
         coord = coord.toUpperCase();
 
@@ -87,56 +93,84 @@ public class Tableau {
             if(MesPierres.get(x).containsKey(y))
                 throw new IllegalArgumentException("illegal move");
             else{
-                Pierre pierre = new Pierre(couleur);
+                 pierre = new Pierre(couleur,x,y);
                 MesPierres.get(x).put(y,pierre);
             }
 
         }
         else{
-            Pierre pierre = new Pierre(couleur);
+             pierre = new Pierre(couleur,x,y);
             MesPierres.put(x,new HashMap<>());
             MesPierres.get(x).put(y,pierre);
         }
-        /* APPEL DE CAPTURE MAIS NECESSIE AJOUT DU SCORE BUG AU CHECK
-        boolean estCapture = capture(couleur, x, y, MesPierres);
-        if (estCapture) {
-            MesPierres.get(x).remove(y);
-        }
-        */
-
+        capture(pierre);
     }
 
 
-    public boolean capture(String couleur, int x, int y, HashMap<Integer,HashMap<Integer, Pierre>> MesPierres) {
-        Pierre pierre = MesPierres.get(x).get(y);
+    public int liberte(Pierre pierre,ArrayList<Pierre.Coord> PierreVisitées ){
+        PierreVisitées.add(new Pierre.Coord(pierre.coord.x(), pierre.coord.y()));
+        int mesliberte = 0 ;
+        List<Pierre> Voisins = pierre.findVoisins(MesPierres,pierre.coord.x(),pierre.coord.y());
+        if(Voisins.size() < 4)
+            return 4 - Voisins.size();
+        for(Pierre pierres : Voisins){
+            if (pierres.getCouleur() == pierre.getCouleur()){
+                boolean pierredéjàvisité = false;
+                for(Pierre.Coord pierrevisitées : PierreVisitées){
+                    if(pierrevisitées.x() == pierres.coord.x() && pierres.coord.y() == pierrevisitées.y())
+                        pierredéjàvisité = true;
+                }
+                if(pierredéjàvisité == false)
+                    mesliberte += liberte(pierres, PierreVisitées);
+            }
 
-        if (pierre == null) {
-            return false;
         }
+        return mesliberte;
+    }
 
-        // recupere les voisin de la pierre aux coord specifiees
-        List<Pierre> voisins = pierre.findVoisins(MesPierres, x, y);
-
-        for (Pierre voisin : voisins) {
-            if (voisin != null && voisin.getCouleur() != pierre.getCouleur()) {
-                List<Pierre> liberties = voisin.findVoisins(MesPierres, x, y);
-                boolean estLibre = false;
-
-                for (Pierre liberty : liberties) {
-                    if (liberty == null) {
-                        estLibre = true;
-                        break;
-                    }
-                }
-                // Si le voisin n'a pas de liberte
-                if (!estLibre) {
-                    return true;
-                }
+    public void capture(Pierre pierre){
+        ArrayList<Pierre.Coord> PierreVisitées = new ArrayList<>();
+        List <Pierre> Voisins = pierre.findVoisins(MesPierres,pierre.coord.x(),pierre.coord.y());
+        for(Pierre pierrevoisins : Voisins){
+            int nbliberté = liberte(pierrevoisins, PierreVisitées);
+            if(nbliberté == 0){
+                ArrayList<Pierre> LesPierresCapturés = new ArrayList<>();
+                LesPierresCapturés.add(pierrevoisins);
+                LesPierresCapturés.addAll(GetPierreCapture(pierrevoisins));
             }
         }
-        return false;
+
+
     }
 
+    public List GetPierreCapture(Pierre pierre){
+        List<Pierre> Voisins = pierre.findVoisins(MesPierres, pierre.coord.x(),pierre.coord.y());
+        ArrayList<Pierre> PierresCapturées = new ArrayList<>();
+        for(Pierre pierresCapturées : Voisins){
+            if(pierresCapturées.getCouleur()==pierre.getCouleur()){
+                if(MesPierresCapturées.containsKey(pierresCapturées.coord.x())){
+                    if(MesPierresCapturées.get(pierresCapturées.coord.x()).containsKey(pierresCapturées.coord.y())){
 
+                    }
+                    else{
+                        MesPierres.get(pierresCapturées.coord.x()).remove(pierresCapturées.coord.y());
+                        MesPierresCapturées.get(pierresCapturées.coord.x()).put(pierresCapturées.coord.y(),new Pierre (pierresCapturées.getCouleur(), pierresCapturées.coord.x(), pierresCapturées.coord.y()));
+                        PierresCapturées.add(pierresCapturées);
+                        PierresCapturées.addAll(GetPierreCapture(pierresCapturées));
+                    }
+
+                }
+                else{
+                    MesPierres.get(pierresCapturées.coord.x()).remove(pierresCapturées.coord.y());
+                    MesPierresCapturées.put(pierresCapturées.coord.x(),new HashMap<>());
+                    MesPierresCapturées.get(pierresCapturées.coord.x()).put(pierresCapturées.coord.y(),new Pierre (pierresCapturées.getCouleur(), pierresCapturées.coord.x(), pierresCapturées.coord.y()));
+                    PierresCapturées.add(pierresCapturées);
+                    PierresCapturées.addAll(GetPierreCapture(pierresCapturées));
+                }
+            }
+
+        }
+        return PierresCapturées;
+    }
 
 }

@@ -70,7 +70,6 @@ public class Main {
                     System.out.println("clear_board");
                 }
                 else if (instruction_donnee.compareTo("play") == 0) {
-                    
                     MonTab.play(arg[0],arg[1]);
                     System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
                     System.out.println(MonTab.seDessiner());
