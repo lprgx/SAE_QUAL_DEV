@@ -91,6 +91,7 @@ public class Tableau {
         if(coord.length() != 2)
             throw new IllegalArgumentException("invalid color or coordinate");
 
+
         Pierre pierre;
         couleur = couleur.toUpperCase();
         coord = coord.toUpperCase();
@@ -100,6 +101,8 @@ public class Tableau {
         int y = coord.charAt(1) -'1';
         if(x < 0 || x >= taille || y < 0 || y >= taille)
             throw new IllegalArgumentException("invalid color or coordinate");
+        if(liberte(new Pierre(couleur,x,y), new ArrayList<>()) == 0)
+            throw new IllegalArgumentException("illegal move");
 
         if(MesPierres.containsKey(x)){
             if(MesPierres.get(x).containsKey(y))
