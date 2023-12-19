@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Random;
 public class Tableau {
     private HashMap<Integer,HashMap<Integer, Pierre>> MesPierres;
     private HashMap<Integer,HashMap<Integer, Pierre>> MesPierresCapturées;
@@ -90,7 +90,6 @@ public class Tableau {
     public void play(String couleur, String coord){
         if(coord.length() != 2)
             throw new IllegalArgumentException("invalid color or coordinate");
-
 
         Pierre pierre;
         couleur = couleur.toUpperCase();
@@ -234,6 +233,41 @@ public class Tableau {
 
         }
         return PierresCapturées;
+    }
+
+    public String genmove(String couleur){
+        ArrayList <Pierre.Coord> CoordPasOccupées = new ArrayList<>();
+        for(int i = 0; i< taille ; ++i){
+            for(int j = 0; j < taille ; ++j){
+                if(MesPierres.containsKey(i)){
+                    if(MesPierres.get(i).containsKey(j)){
+                    }
+                    else{
+                        CoordPasOccupées.add(new Pierre.Coord(i,j+1));
+                    }
+                }
+                else{
+                    CoordPasOccupées.add(new Pierre.Coord(i,j+1));
+                }
+            }
+        }
+
+        for(int i = 0 ; i < CoordPasOccupées.size() ; ++i){
+            if(liberte(new Pierre(couleur,CoordPasOccupées.get(i).x(),CoordPasOccupées.get(i).y()), new ArrayList<Pierre.Coord>())==0){
+                CoordPasOccupées.remove(i);
+            }
+        }
+        Random random = new Random();
+        int MesCoord = random.nextInt(CoordPasOccupées.size());
+        String a = CoordPasOccupées.get(MesCoord).toString();
+        int coordX = a.charAt(0) - '0' + 'A';
+        char y = (char)coordX;
+        StringBuilder fff = new StringBuilder();
+        fff.append(y);
+        fff.append(a.charAt(1));
+        play(couleur.toUpperCase(),fff.toString());
+
+        return fff.toString();
     }
 
 }

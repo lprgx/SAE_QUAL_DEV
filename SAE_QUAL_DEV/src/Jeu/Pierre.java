@@ -14,7 +14,12 @@ public class Pierre {
         return couleur.toString();
     }
     //AJOUT DE LA STRUCTURE DE DONNEES COORD
-    public record Coord(int x, int y){};
+    public record Coord(int x, int y){
+        @Override
+        public String toString() {
+            return x+""+y;
+        }
+    };
 
     private static final Coord[] voisins = {
             new Coord(1, 0),

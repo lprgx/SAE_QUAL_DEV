@@ -79,14 +79,12 @@ public class Main {
                         try{
                             MonTab.play(arg[0],arg[1]);
                             System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
-                            System.out.println(MonTab.seDessiner());
 
 
                         }catch(IllegalArgumentException e){
                             System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+" "+e.getLocalizedMessage());
                         }
                     }
-
                 }
                 else if(instruction_donnee.compareTo("query_boardsize") == 0){
                     System.out.println(MonTab.query_boardsize());
@@ -98,6 +96,17 @@ public class Main {
                 else if(instruction_donnee.compareTo("QUIT") == 0){
                     System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
                     return;
+                }
+                else if(instruction_donnee.compareTo("GENMOVE") == 0){
+                    try{
+                        String Coord = MonTab.genmove(arg[0]);
+                        System.out.println("=" + (numero_donné == 0 ? "" : numero_donné)+" "+Coord);
+                    }
+                    catch(Exception e){
+                        System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+" "+e.getLocalizedMessage());
+
+                    }
+
                 }
                 else{
                     System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+" unknown command");
