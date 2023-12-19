@@ -32,7 +32,7 @@ public class Tableau {
     }
 
     //Dessiner le tableau
-    public String seDessiner(){
+    public String Show_board(){
         StringBuilder dessin = new StringBuilder();
         dessin.append("   ");
         char lettre = 'A';
@@ -80,7 +80,10 @@ public class Tableau {
 
 
     public void ClearTheBoard(){
-        //a coder
+        MesPierres = new HashMap <> ();
+        MesPierresCapturées = new HashMap <> ();
+        NbBlackCapturés = 0;
+        NbWhiteCapturés = 0;
     }
 
     public int query_boardsize(){
@@ -121,7 +124,7 @@ public class Tableau {
     }
 
 
-    public int liberte(Pierre pierre,ArrayList<Pierre.Coord> PierreVisitées ){
+    private int liberte(Pierre pierre,ArrayList<Pierre.Coord> PierreVisitées ){
         PierreVisitées.add(new Pierre.Coord(pierre.coord.x(), pierre.coord.y()));
         int mesliberte = 0 ;
         List<Pierre> Voisins = pierre.findVoisins(MesPierres,pierre.coord.x(),pierre.coord.y());
@@ -152,7 +155,7 @@ public class Tableau {
         return mesliberte;
     }
 
-    public void capture(Pierre pierre){
+    private void capture(Pierre pierre){
         ArrayList<Pierre.Coord> PierreVisitées = new ArrayList<>();
         List <Pierre> Voisins = pierre.findVoisins(MesPierres,pierre.coord.x(),pierre.coord.y());
         for(Pierre pierrevoisins : Voisins){

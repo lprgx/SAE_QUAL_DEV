@@ -16,7 +16,7 @@ public class Main {
             commande_zpasse = commande_zpasse.trim();
             int numero_donné = 0;
             String instruction_donnee = "";
-            String arg [] = new String[0]; //Plus tard, on peut faire un tableau d'argument
+            String arg [] = new String[0];
             boolean commande_valide = false;
             String commande_passe[];
             if(commande_zpasse.length() != 0){
@@ -91,7 +91,7 @@ public class Main {
                 }
                 else if(instruction_donnee.compareTo("SHOWBOARD") == 0){
                     System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
-                    System.out.println(MonTab.seDessiner());
+                    System.out.println(MonTab.Show_board());
                 }
                 else if(instruction_donnee.compareTo("QUIT") == 0){
                     System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
