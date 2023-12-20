@@ -14,13 +14,6 @@ public class Pierre {
         return couleur.toString();
     }
     //AJOUT DE LA STRUCTURE DE DONNEES COORD
-    public record Coord(int x, int y){
-        @Override
-        public String toString() {
-            return x+""+y;
-        }
-    };
-
     private static final Coord[] voisins = {
             new Coord(1, 0),
             new Coord(0, 1),
@@ -32,9 +25,9 @@ public class Pierre {
     public List<Pierre> findVoisins(HashMap<Integer, HashMap<Integer, Pierre>> tableau, int x, int y){
         List<Pierre> voisinsList = new ArrayList<>();
         for(Coord c : voisins){
-            int newX = x + c.y();
+            int newX = x + c.getY();
 
-            int newY = y + c.x();
+            int newY = y + c.getX();
             if(tableau.containsKey(newX)){
                 if(tableau.get(newX).containsKey(newY))
                     voisinsList.add(tableau.get(newX).get(newY));
