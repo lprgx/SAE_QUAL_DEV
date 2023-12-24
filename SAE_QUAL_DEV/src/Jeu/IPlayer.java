@@ -8,5 +8,4 @@ public interface IPlayer {
     public void play(String couleur, String coord);
 
 
-
 }

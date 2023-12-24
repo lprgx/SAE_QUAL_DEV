@@ -69,6 +69,9 @@ public class Protocole_GTP {
                     }
 
                 }
+                else if(instruction_donnee.compareTo("PLAYER") == 0){
+
+                }
                 else if (instruction_donnee.compareTo("CLEAR_BOARD") == 0) {
                     MonTab.ClearTheBoard();
                     System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));

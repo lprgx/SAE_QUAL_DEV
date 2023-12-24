@@ -5,14 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Pierre {
-    private enum TypeCouleur {
-        WHITE,
-        BLACK
-    }
+
 
     public String getCouleur(){
         return couleur.toString();
     }
+
     //AJOUT DE LA STRUCTURE DE DONNEES COORD
     private static final Coord[] voisins = {
             new Coord(1, 0),
@@ -22,40 +20,34 @@ public class Pierre {
     };
     public Coord coord;
 
-    public List<Pierre> findVoisins(HashMap<Integer, HashMap<Integer, Pierre>> tableau, int x, int y){
+    public List<Pierre> findVoisins(HashMap<Coord,Pierre> tableau, int x, int y){
         List<Pierre> voisinsList = new ArrayList<>();
         for(Coord c : voisins){
             int newX = x + c.getY();
 
             int newY = y + c.getX();
-            if(tableau.containsKey(newX)){
-                if(tableau.get(newX).containsKey(newY))
-                    voisinsList.add(tableau.get(newX).get(newY));
-            }
+            if(tableau.containsKey(new Coord(newX,newY)))
+                voisinsList.add(tableau.get(new Coord(newX,newY)));
         }
         return voisinsList; // on retourne la liste de voisins
     }
 
 
-    private TypeCouleur couleur;
+    private Couleur couleur;
 
     public Pierre(String couleur, int x, int y){
-        if(couleur.compareTo("WHITE")!=0 && couleur.compareTo("BLACK")!=0)
-            throw new IllegalArgumentException("invalid color or coordinate");
-        if(couleur.compareTo("WHITE")==0) {
-            this.couleur = TypeCouleur.WHITE;
-        }
-        else
-            this.couleur = TypeCouleur.BLACK;
+        this.couleur = new Couleur(couleur);
         coord = new Coord(x,y);
     }
 
     public String toString(){
-        if(couleur == TypeCouleur.BLACK){
+
+        if(couleur.toString() == "BLACK"){
             return "X";
         }
         else
             return "O";
+
     }
 }
 
