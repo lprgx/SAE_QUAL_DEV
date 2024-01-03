@@ -5,7 +5,5 @@ import java.util.HashMap;
 
 public interface IPlayer {
 
-    public void play(String couleur, String coord);
-
-
+    public Pierre play(Tableau tab, String couleur, String coord) ;
 }

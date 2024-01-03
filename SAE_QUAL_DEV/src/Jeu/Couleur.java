@@ -1,5 +1,7 @@
 package Jeu;
 
+import java.util.Objects;
+
 public class Couleur {
     private enum TypeCouleur {
         WHITE,
@@ -38,6 +40,11 @@ public class Couleur {
             return true;
         else
             return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(couleur);
     }
 }
 
