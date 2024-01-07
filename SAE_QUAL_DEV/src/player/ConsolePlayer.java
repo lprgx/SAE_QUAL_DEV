@@ -5,13 +5,12 @@ import Jeu.IPlayer;
 import Jeu.Pierre;
 import Jeu.Tableau;
 
-import java.util.ArrayList;
-
 public class ConsolePlayer implements IPlayer {
 
 
     @Override
     public Pierre play(Tableau tab, String couleur, String coord) {
+
         if(coord.length() != 2)
             throw new IllegalArgumentException("invalid color or coordinate");
 
@@ -29,5 +28,10 @@ public class ConsolePlayer implements IPlayer {
 
         pierre = new Pierre(couleur,x,y);
         return pierre;
+    }
+
+    @Override
+    public Boolean SonTour(Tableau tab, String couleur) {
+        return tab.getTour(couleur);
     }
 }

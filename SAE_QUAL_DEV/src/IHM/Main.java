@@ -1,13 +1,8 @@
 package IHM;
-
-import Jeu.Tableau;
-
-import java.util.Scanner;
-
 public class Main {
 
     public static void main(String[] args) {
-        Protocole_GTP protocole = new Protocole_GTP();
+        Protocole_GTP protocole = new Protocole_GTP(args);
         protocole.jeu();
     }
 

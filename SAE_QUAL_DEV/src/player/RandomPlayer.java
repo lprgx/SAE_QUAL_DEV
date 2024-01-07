@@ -38,5 +38,10 @@ public class RandomPlayer implements IPlayer {
         return pierre;
     }
 
+    @Override
+    public Boolean SonTour(Tableau tab, String couleur) {
+        return tab.getTour(couleur);
+    }
+
 
 }

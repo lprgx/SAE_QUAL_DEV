@@ -19,13 +19,14 @@ public class Pierre {
             new Coord(0, -1)
     };
     public Coord coord;
+    private Couleur couleur;
 
-    public List<Pierre> findVoisins(HashMap<Coord,Pierre> tableau, int x, int y){
+    public List<Pierre> findVoisins(HashMap<Coord,Pierre> tableau){
         List<Pierre> voisinsList = new ArrayList<>();
         for(Coord c : voisins){
-            int newX = x + c.getY();
+            int newX = coord.getX() + c.getY();
 
-            int newY = y + c.getX();
+            int newY = coord.getY() + c.getX();
             if(tableau.containsKey(new Coord(newX,newY)))
                 voisinsList.add(tableau.get(new Coord(newX,newY)));
         }
@@ -33,7 +34,6 @@ public class Pierre {
     }
 
 
-    private Couleur couleur;
 
     public Pierre(String couleur, int x, int y){
         this.couleur = new Couleur(couleur);

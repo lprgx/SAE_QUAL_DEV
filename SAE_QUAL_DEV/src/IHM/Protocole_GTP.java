@@ -2,9 +2,7 @@ package IHM;
 
 import Jeu.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
 import player.ConsolePlayer;
@@ -12,13 +10,44 @@ import player.RandomPlayer;
 
 public class Protocole_GTP {
 
-    boolean tour;
+
     HashMap<String, IPlayer> Joueurs;
 
-    public Protocole_GTP(){
+    public Protocole_GTP(String[] args){
         Joueurs = new HashMap<>();
-        Joueurs.put("BLACK",new ConsolePlayer());
-        Joueurs.put("WHITE",new ConsolePlayer());
+
+        if(args.length == 0){
+            Joueurs.put("BLACK",new ConsolePlayer());
+            Joueurs.put("WHITE",new ConsolePlayer());
+        }
+        else if(args.length == 1){
+            if(args[0].toUpperCase().compareTo("BLACK")==0){
+                Joueurs.put("BLACK",new RandomPlayer());
+                Joueurs.put("WHITE",new ConsolePlayer());
+            }
+            else if(args[0].toUpperCase().compareTo("WHITE")==0){
+                Joueurs.put("WHITE",new RandomPlayer());
+                Joueurs.put("BLACK",new ConsolePlayer());
+            }
+            else{
+                Joueurs.put("BLACK",new ConsolePlayer());
+                Joueurs.put("WHITE",new ConsolePlayer());
+            }
+        }
+        else{
+            if(args[0].toUpperCase().compareTo("BLACK")==0)
+                Joueurs.put("BLACK",new RandomPlayer());
+            else if(args[1].toUpperCase().compareTo("BLACK")==0)
+                Joueurs.put("BLACK",new RandomPlayer());
+            else
+                Joueurs.put("BLACK",new ConsolePlayer());
+            if(args[0].toUpperCase().compareTo("WHITE")==0)
+                Joueurs.put("WHITE",new RandomPlayer());
+            else if(args[1].toUpperCase().compareTo("WHITE")==0)
+                Joueurs.put("WHITE",new RandomPlayer());
+            else
+                Joueurs.put("WHITE",new ConsolePlayer());
+        }
     }
 
     public void jeu(){
@@ -50,7 +79,6 @@ public class Protocole_GTP {
             }
 
             else{
-
                 String commande_zpasse = scanner.nextLine();
                 commande_zpasse = commande_zpasse.trim();
                 int numero_donné = 0;
@@ -128,7 +156,7 @@ public class Protocole_GTP {
                             System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+ " invalid color or coordinate");
                         else{
                             try{
-                                MonTab.play(Joueurs.get(arg[0].toUpperCase()).play(MonTab,arg[0],arg[1]));
+                                MonTab.play(Joueurs.get(arg[0].toUpperCase()).play(MonTab,arg[0].toUpperCase(),arg[1]));
                                 System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
                                 if(Joueurs.get("BLACK").getClass().getSimpleName().compareTo("RandomPlayer")==0 ){
                                     boolean pierreposée = false;
@@ -158,8 +186,8 @@ public class Protocole_GTP {
 
                                 }
 
-                            }catch(IllegalArgumentException e){
-                                System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+" "+e.getLocalizedMessage());
+                            }catch(Exception e){
+                                System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+" invalid color or coordinate");
                             }
                         }
                     }

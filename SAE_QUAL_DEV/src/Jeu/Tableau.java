@@ -3,9 +3,11 @@ package Jeu;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
+
 public class Tableau {
+
+    HashMap<String,Boolean> tour;
+
     private HashMap<Coord, Pierre> MesPierres;
 
     private HashMap<Coord, Pierre> MesPierresCapturées;
@@ -25,6 +27,9 @@ public class Tableau {
         MesPierresCapturées = new HashMap <> ();
         NbBlackCapturés = 0;
         NbWhiteCapturés = 0;
+        tour = new HashMap<>();
+        tour.put("BLACK",true);
+        tour.put("WHITE",false);
 
     }
 
@@ -103,6 +108,8 @@ public class Tableau {
 
         capture(pierre);
         MesPierresCapturées.clear();
+        tour.put("BLACK",tour.get("WHITE"));
+        tour.put("WHITE",!(tour.get("BLACK")));
         return pierre.coord;
     }
 
@@ -110,7 +117,7 @@ public class Tableau {
     public int liberte(Pierre pierre,ArrayList<Coord> PierreVisitées ){
         PierreVisitées.add(new Coord(pierre.coord.getX(), pierre.coord.getY()));
         int mesliberte = 0 ;
-        List<Pierre> Voisins = pierre.findVoisins(MesPierres,pierre.coord.getX(),pierre.coord.getY());
+        List<Pierre> Voisins = pierre.findVoisins(MesPierres);
         if((pierre.coord.getX() == 0 && pierre.coord.getY() == taille-1) || (pierre.coord.getX() == 0 && pierre.coord.getY() == 0) || (pierre.coord.getX() == taille-1 && pierre.coord.getY() == 0) ||(pierre.coord.getX() == taille-1 && pierre.coord.getY() == taille -1)  ){
             if (Voisins.size() < 2)
                 return 2 - Voisins.size();
@@ -138,7 +145,7 @@ public class Tableau {
     }
 
     private void capture(Pierre pierre){
-        List <Pierre> Voisins = pierre.findVoisins(MesPierres,pierre.coord.getX(),pierre.coord.getY());
+        List <Pierre> Voisins = pierre.findVoisins(MesPierres);
         for(Pierre pierrevoisins : Voisins){
             int nbliberté = liberte(pierrevoisins, new ArrayList<>());
             if(nbliberté == 0){
@@ -153,7 +160,7 @@ public class Tableau {
     }
 
     public List GetPierreCapture(Pierre pierre){
-        List<Pierre> Voisins = pierre.findVoisins(MesPierres, pierre.coord.getX(),pierre.coord.getY());
+        List<Pierre> Voisins = pierre.findVoisins(MesPierres);
         ArrayList<Pierre> PierresCapturées = new ArrayList<>();
         if(!(MesPierresCapturées.containsKey((pierre.coord)))){
             MesPierres.remove(pierre.coord);
@@ -195,7 +202,7 @@ public class Tableau {
         for(int i = 0 ; i < taille ; i++){
             for(int j = 0; j < taille ; j++){
                 if(!(MesPierres.containsKey(new Coord(i,j)))){
-                   // MesPierres.put(new Coord(i,j),new Pierre("BLACK",i,j));
+                   //   MesPierres.put(new Coord(i,j),new Pierre("BLACK",i,j));
                     if(liberte(new Pierre("BLACK",i,j),new ArrayList<>())!=0)
                         return false;
                    // MesPierres.remove(new Coord(i,j));
@@ -209,5 +216,8 @@ public class Tableau {
         return true;
     }
 
+    public boolean getTour(String couleur){
+        return tour.get(couleur);
+    }
 
 }

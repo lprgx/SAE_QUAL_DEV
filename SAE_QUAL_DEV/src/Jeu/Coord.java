@@ -2,8 +2,8 @@ package Jeu;
 import java.util.Objects;
 
 public class Coord {
-    int x;
-    int y;
+    private int x;
+    private int y;
 
     public Coord(int x_, int y_){
 
