@@ -49,6 +49,7 @@ public class Couleur {
     public int hashCode() {
         return Objects.hash(couleur);
     }
+
 }
 
 
