@@ -29,19 +29,17 @@ public class RandomPlayer implements IPlayer {
         }
         Random random = new Random();
         int MesCoord = random.nextInt(CoordPasOccupées.size());
-        String a = CoordPasOccupées.get(MesCoord).toString();
         int x = CoordPasOccupées.get(MesCoord).getX();
         int y = CoordPasOccupées.get(MesCoord).getY();
-        Pierre pierre;
         couleur = couleur.toUpperCase();
-        pierre = new Pierre(couleur,x,y);
+        Pierre pierre = new Pierre(couleur,x,y);
         return pierre;
     }
 
-    @Override
+   /* @Override
     public Boolean SonTour(Tableau tab, String couleur) {
         return tab.getTour(couleur);
     }
 
-
+    */
 }

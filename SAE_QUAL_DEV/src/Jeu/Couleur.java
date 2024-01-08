@@ -9,10 +9,16 @@ public class Couleur {
     }
     TypeCouleur couleur;
 
+    public static boolean isCouleur(String couleur){
+        if(couleur.toUpperCase().compareTo(TypeCouleur.BLACK.toString())!=0 && couleur.toUpperCase().compareTo(TypeCouleur.WHITE.toString())!=0)
+            return false;
+        else return true;
+    }
+
     public Couleur(String c){
-        if(c.compareTo("WHITE")!=0 && c.compareTo("BLACK")!=0)
+        if(!(isCouleur(c)))
             throw new IllegalArgumentException("invalid color or coordinate");
-        if(c.compareTo("WHITE")==0) {
+        if(c.compareTo(TypeCouleur.WHITE.toString())==0) {
             this.couleur = TypeCouleur.WHITE;
         }
         else
@@ -20,10 +26,7 @@ public class Couleur {
     }
     @Override
     public String toString(){
-        if (couleur == TypeCouleur.BLACK)
-            return"BLACK";
-        else
-            return "WHITE";
+        return couleur.toString();
     }
 
 

@@ -6,10 +6,8 @@ import java.util.List;
 
 public class Tableau {
 
-    HashMap<String,Boolean> tour;
 
     private HashMap<Coord, Pierre> MesPierres;
-
     private HashMap<Coord, Pierre> MesPierresCapturées;
     private int NbBlackCapturés;
     private int NbWhiteCapturés;
@@ -27,9 +25,6 @@ public class Tableau {
         MesPierresCapturées = new HashMap <> ();
         NbBlackCapturés = 0;
         NbWhiteCapturés = 0;
-        tour = new HashMap<>();
-        tour.put("BLACK",true);
-        tour.put("WHITE",false);
 
     }
 
@@ -99,8 +94,12 @@ public class Tableau {
     }
 
     public Coord play(Pierre pierre){
-        MesPierres.put(new Coord(pierre.coord.getX(),pierre.coord.getY()),pierre);
+        if(pierre.coord.getX() < 0 || pierre.coord.getX() >= taille || pierre.coord.getY() < 0 || pierre.coord.getY() >= taille)
+            throw new IllegalArgumentException("invalid color or coordinate");
+        if(contientPierre(new Coord(pierre.coord.getX(),pierre.coord.getY())))
+            throw new IllegalArgumentException("illegal move");
 
+        MesPierres.put(new Coord(pierre.coord.getX(),pierre.coord.getY()),pierre);
         if(liberte(pierre, new ArrayList<>()) == 0){
             MesPierres.remove(pierre.coord);
             throw new IllegalArgumentException("illegal move");
@@ -108,8 +107,7 @@ public class Tableau {
 
         capture(pierre);
         MesPierresCapturées.clear();
-        tour.put("BLACK",tour.get("WHITE"));
-        tour.put("WHITE",!(tour.get("BLACK")));
+
         return pierre.coord;
     }
 
@@ -216,8 +214,18 @@ public class Tableau {
         return true;
     }
 
-    public boolean getTour(String couleur){
-        return tour.get(couleur);
+    public int getLiberté(String coord){
+        if(coord.length() != 2)
+            throw new IllegalArgumentException("invalid color or coordinate");
+        Pierre pierre;
+        coord = coord.toUpperCase();
+        int x = coord.charAt(0) - 'A';
+        int y = coord.charAt(1) -'1';
+        if(MesPierres.containsKey(new Coord(x,y))){
+            return liberte(MesPierres.get(new Coord(x,y)), new ArrayList<>());
+        }
+        else
+            return -1;
     }
 
 }
