@@ -87,6 +87,8 @@ public class Protocole_GTP {
                     else if(instruction_donnee.compareTo("LIBERTIES")==0){
                         try{
                             int nbLiberté = MonTab.getLiberté(arg[0]);
+                            System.out.println("=" + (numero_donné == 0 ? "" : numero_donné)+"\n"+arg[0]+" a "+nbLiberté+" liberté");
+
                         }catch(Exception e){
                             System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+e.getLocalizedMessage());
                         }
