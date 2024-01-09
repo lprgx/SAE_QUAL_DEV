@@ -17,9 +17,11 @@ public class RandomPlayer implements IPlayer {
         for(int i = 0; i< tab.getTaille(); ++i){
             for(int j = 0; j < tab.getTaille() ; ++j){
                 if(!(tab.contientPierre(new Coord(i,j)))){
-                    if(tab.liberte(new Pierre(couleur, i, j),new ArrayList<>())!=0){
+                    if((tab.liberte(new Pierre(couleur, i, j), new ArrayList<>()) == 0 && tab.getLibertéVoisins(new Pierre(couleur, i, j))==0)){
+                        return (new Pierre(couleur,i,j));
+                    }
+                    if((tab.liberte(new Pierre(couleur, i, j),new ArrayList<>())!=0)){
                         CoordPasOccupées.add(new Coord(i,j));
-
                     }
                 }
             }

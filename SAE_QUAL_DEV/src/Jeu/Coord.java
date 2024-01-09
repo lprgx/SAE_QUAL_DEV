@@ -11,7 +11,10 @@ public class Coord {
         y=y_;
     }
     public String toString() {
-        return x+""+y;
+
+        char a = (char) ('A'+x);
+        int b = y+1;
+        return a+""+b;
     }
 
     public boolean compareTo(Coord a){

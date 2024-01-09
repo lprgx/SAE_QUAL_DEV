@@ -10,6 +10,7 @@ import java.util.Random;
 public class FabriqueJoueur {
 
     public static IPlayer CreerJoueur(String couleur, String type){
+
         if(!(Couleur.isCouleur(couleur)))
             throw new IllegalArgumentException("invalid color");
         if(type.toUpperCase().compareTo("CONSOLE")==0){

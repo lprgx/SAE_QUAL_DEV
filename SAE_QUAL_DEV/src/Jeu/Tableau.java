@@ -100,7 +100,7 @@ public class Tableau {
             throw new IllegalArgumentException("illegal move");
 
         MesPierres.put(new Coord(pierre.coord.getX(),pierre.coord.getY()),pierre);
-        if(liberte(pierre, new ArrayList<>()) == 0){
+        if(liberte(pierre, new ArrayList<>()) == 0 && getLibertéVoisins(pierre)!=0){
             MesPierres.remove(pierre.coord);
             throw new IllegalArgumentException("illegal move");
         }
@@ -113,19 +113,36 @@ public class Tableau {
 
 
     public int liberte(Pierre pierre,ArrayList<Coord> PierreVisitées ){
+        boolean exist =true;
+        if(!(MesPierres.containsKey(pierre.coord))){
+            MesPierres.put(new Coord(pierre.coord.getX(),pierre.coord.getY()),pierre);
+            exist = false;
+        }
         PierreVisitées.add(new Coord(pierre.coord.getX(), pierre.coord.getY()));
         int mesliberte = 0 ;
         List<Pierre> Voisins = pierre.findVoisins(MesPierres);
         if((pierre.coord.getX() == 0 && pierre.coord.getY() == taille-1) || (pierre.coord.getX() == 0 && pierre.coord.getY() == 0) || (pierre.coord.getX() == taille-1 && pierre.coord.getY() == 0) ||(pierre.coord.getX() == taille-1 && pierre.coord.getY() == taille -1)  ){
-            if (Voisins.size() < 2)
+            if (Voisins.size() < 2){
+                if(!(exist)){
+                    MesPierres.remove(pierre.coord);
+                }
                 return 2 - Voisins.size();
+            }
         }
         else if(pierre.coord.getX() == 0 || pierre.coord.getY() == taille-1 || pierre.coord.getY() == 0 || pierre.coord.getX() == taille-1){
-            if (Voisins.size() < 3)
+            if (Voisins.size() < 3) {
+                if(!(exist)){
+                    MesPierres.remove(pierre.coord);
+                }
                 return 3 - Voisins.size();
+            }
         }
-        else if(Voisins.size() < 4)
+        else if(Voisins.size() < 4){
+            if(!(exist)){
+                MesPierres.remove(pierre.coord);
+            }
             return 4 - Voisins.size();
+        }
 
         for(Pierre pierres : Voisins){
             if (pierres.getCouleur().compareTo(pierre.getCouleur())==0){
@@ -138,6 +155,9 @@ public class Tableau {
                     mesliberte += liberte(pierres, PierreVisitées);
             }
 
+        }
+        if(!(exist)){
+            MesPierres.remove(pierre.coord);
         }
         return mesliberte;
     }
@@ -197,26 +217,23 @@ public class Tableau {
     }
 
     public boolean estPlein(){
+        int nbPierrePosable = 0;
         for(int i = 0 ; i < taille ; i++){
             for(int j = 0; j < taille ; j++){
                 if(!(MesPierres.containsKey(new Coord(i,j)))){
-                   //   MesPierres.put(new Coord(i,j),new Pierre("BLACK",i,j));
-                    if(liberte(new Pierre("BLACK",i,j),new ArrayList<>())!=0)
-                        return false;
-                   // MesPierres.remove(new Coord(i,j));
-                   // MesPierres.put(new Coord(i,j),new Pierre("WHITE",i,j));
-                    if(liberte(new Pierre("WHITE",i,j),new ArrayList<>())!=0)
-                        return false;
-                   // MesPierres.remove(new Coord(i,j));
+                   nbPierrePosable++;
                 }
             }
         }
-        return true;
+        if(nbPierrePosable==1)
+            return true;
+        else
+            return false;
     }
 
     public int getLiberté(String coord){
         if(coord.length() != 2)
-            throw new IllegalArgumentException("invalid color or coordinate");
+            throw new IllegalArgumentException(" invalid color or coordinate");
         Pierre pierre;
         coord = coord.toUpperCase();
         int x = coord.charAt(0) - 'A';
@@ -225,7 +242,33 @@ public class Tableau {
             return liberte(MesPierres.get(new Coord(x,y)), new ArrayList<>());
         }
         else
-            return -1;
+            throw new IllegalArgumentException(" There is no stone in " +coord);
     }
 
+    public int getNbBlackCapturés(){
+        return getNbBlackCapturés();
+    }
+    public int getNbWhiteCapturés(){
+        return getNbWhiteCapturés();
+    }
+
+    public int getLibertéVoisins(Pierre pierre){
+        boolean exist = true;
+        if(!(MesPierres.containsKey(pierre.coord))){
+            MesPierres.put(pierre.coord,pierre);
+            exist = false;
+        }
+        List<Pierre> Voisins = pierre.findVoisins(MesPierres);
+        for (Pierre p : Voisins){
+            if(p.getCouleur().compareTo(pierre.getCouleur())!=0){
+               int nb = liberte(p,new ArrayList<>());
+               if(!(exist)){
+                   MesPierres.remove(pierre.coord);
+               }
+                return nb;
+            }
+        }
+        MesPierres.remove(pierre.coord);
+        return -1;
+    }
 }

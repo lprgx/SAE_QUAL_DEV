@@ -85,16 +85,15 @@ public class Protocole_GTP {
                         }
                     }
                     else if(instruction_donnee.compareTo("LIBERTIES")==0){
-                        int nbLiberté = MonTab.getLiberté(arg[0]);
-                        if(nbLiberté < 0 )
-                            System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+" There is no stone in "+arg[0]);
-                        else
-                            System.out.println(nbLiberté);
+                        try{
+                            int nbLiberté = MonTab.getLiberté(arg[0]);
+                        }catch(Exception e){
+                            System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+e.getLocalizedMessage());
+                        }
                     }
                     else if(instruction_donnee.compareTo("PLAYER") == 0){
                         if (arg.length!=2){
                             System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+" unknown command");
-                            continue;
                         }
                          try {
                              IPlayer p = FabriqueJoueur.CreerJoueur(arg[0].toUpperCase(), arg[1].toUpperCase());
@@ -149,22 +148,23 @@ public class Protocole_GTP {
                         }
                     }
                     else if(instruction_donnee.compareTo("SHOWBOARD") == 0){
-                        System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
-                        System.out.println(MonTab.Show_board());
+                        System.out.println("=" + (numero_donné == 0 ? "" : numero_donné)+"\n"+MonTab.Show_board());
                     }
                     else if((instruction_donnee.compareTo("BLACK") == 0 )||(instruction_donnee.compareTo("WHITE") == 0 )){
                         if(arg[0].toUpperCase().compareTo("PASS")==0){
                             if(tour.get(true).compareTo(instruction_donnee)==0){
                                 System.out.println("=" + (numero_donné == 0 ? "" : numero_donné));
                                 ChangeTour();
-                                if(passe.get(instruction_donnee)>0){
-                                    System.out.println(instruction_donnee + " abandonne");
+                                passe.put(instruction_donnee,passe.get(instruction_donnee)+1);
+                                if(passe.get("BLACK")>0 && passe.get("WHITE")>0){
                                     return;
                                 }
-                                passe.put(instruction_donnee,passe.get(instruction_donnee)+1);
                             }
                             else
                                 System.out.println("Ce n'est pas à votre tour de jouer");
+                        }
+                        else{
+                            System.out.println("?"+ (numero_donné == 0 ? "" : numero_donné)+" unknown command");
                         }
                     }
                     else if(instruction_donnee.compareTo("QUIT") == 0){
@@ -181,16 +181,19 @@ public class Protocole_GTP {
     private void RandomPlay(Tableau MonTab){
         do{
             try{
-                MonTab.play(Joueurs.get(tour.get(true)).play(MonTab,tour.get(true),"00"));
+                Pierre p = Joueurs.get(tour.get(true)).play(MonTab,tour.get(true),"00");
+                MonTab.play(p);
+                System.out.println("\n"+tour.get(true)+" joue en "+p.coord.toString()+"\n");
+                System.out.println(MonTab.Show_board());
                 if(passe.get(tour.get(true))>0)
                     passe.put("BLACK",0);
             }catch(Exception e){
                 passe.put(tour.get(true),1);
+                System.out.println("\n"+tour.get(true)+" passe\n");
             }
-            if((passe.get("BLACK")>0 && passe.get("WHITE")>0)||passe.get("BLACK") ==MAX_PASSE || passe.get("WHITE") == MAX_PASSE)
+            if((passe.get("BLACK")>0 && passe.get("WHITE")>0))
                 return;
             ChangeTour();
-            System.out.println(MonTab.Show_board());
         }while(!(MonTab.estPlein()));
     }
     private void ChangeTour(){
