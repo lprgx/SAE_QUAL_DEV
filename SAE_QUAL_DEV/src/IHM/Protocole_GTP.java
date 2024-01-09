@@ -5,8 +5,6 @@ import Jeu.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import player.ConsolePlayer;
-
 public class Protocole_GTP {
     private HashMap<String,Integer> passe;
 
@@ -23,8 +21,9 @@ public class Protocole_GTP {
         tour.put(false,"WHITE");
         passe.put("BLACK",0);
         passe.put("WHITE",0);
-        Joueurs.put("BLACK",new ConsolePlayer());
-        Joueurs.put("WHITE",new ConsolePlayer());
+        Joueurs.put("BLACK", FabriqueJoueur.CreerJoueur("BLACK","CONSOLE"));
+        Joueurs.put("WHITE",FabriqueJoueur.CreerJoueur("WHITE","CONSOLE"));
+
     }
 
     public void jeu(){

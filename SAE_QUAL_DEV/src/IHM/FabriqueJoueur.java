@@ -25,5 +25,4 @@ public class FabriqueJoueur {
             throw new IllegalArgumentException("you have to say console or random");
         }
     }
-
 }
