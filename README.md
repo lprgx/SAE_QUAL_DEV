@@ -1,6 +1,6 @@
 # SAE_QUAL_DEV
 
-architecture ok, prise ok, suicide interdit trop strictement, coups joués non affichés
+architecture ok, prise ok, suicide interdit trop strictement, coups joués non affichés (puis corrigé)
 un méthode par commande GTP aurait été mieux, des methodes sont trop longues comme libertes()
 
 Note 14/20
